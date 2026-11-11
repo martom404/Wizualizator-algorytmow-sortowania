@@ -20,6 +20,19 @@
   &.sorted  { background: var(--bar-sorted); }
 }
 
+/* Tryb zdjęcia: słupki bez odstępów i na całą wysokość */
+.image-mode {
+  gap: 0;
+}
+
+.image {
+  height: 100%;
+  border-radius: 0;
+
+  /* aktualnie porównywane / zamieniane słupki są przezroczyste */
+  &.compare, &.swap, &.write { opacity: 0.4; }
+}
+
 .value {
   position: absolute;
   bottom: 100%;

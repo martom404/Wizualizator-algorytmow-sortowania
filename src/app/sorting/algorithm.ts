@@ -186,3 +186,23 @@ export function generateArray(size: number, maxValue: number): number[] {
 
   return result;
 }
+
+// Liczby od 1 do size w losowej kolejności (liczba = numer kawałka zdjęcia)
+export function generateShuffledRange(size: number): number[] {
+  const result: number[] = [];
+
+  // Najpierw po kolei: 1, 2, 3, ..., size
+  for (let i = 1; i <= size; i++) {
+    result.push(i);
+  }
+
+  // Potem mieszamy: każdy element zamieniamy z losowo wybranym
+  for (let i = 0; i < size; i++) {
+    const j = Math.floor(Math.random() * size);
+    const temp = result[i];
+    result[i] = result[j];
+    result[j] = temp;
+  }
+
+  return result;
+}

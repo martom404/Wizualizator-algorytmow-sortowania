@@ -10,6 +10,18 @@ import { SortState } from '../../sorting/models';
 export class SortBars {
   state = input.required<SortState>();
   maxValue = input.required<number>();
+  imageUrl = input(''); // pusty = zwykłe słupki
+
+  // Styl słupka, który ma pokazać kawałek zdjęcia o numerze "value"
+  imageStyle(value: number) {
+    const count = this.state().array.length; // na ile kawałków dzielimy zdjęcie
+
+    return {
+      'background-image': 'url(' + this.imageUrl() + ')',
+      'background-size': count * 100 + '% 100%',
+      'background-position': ((value - 1) / (count - 1)) * 100 + '% 0',
+    };
+  }
 
   color(index: number): string {
     const state = this.state();

@@ -1,5 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { generateArray, runAlgorithm } from '../sorting/algorithm';
+import { generateArray, generateShuffledRange, runAlgorithm } from '../sorting/algorithm';
 import { ALGORITHM_INFO } from '../sorting/algorithm-info';
 import { buildSnapshots } from '../sorting/playback';
 import { Algorithm, SortState } from '../sorting/models';
@@ -12,6 +12,7 @@ export class SortPlayer {
   algorithm = signal<Algorithm>('bubble');
   size = signal(10);
   delay = signal(200);
+  imageUrl = signal(''); // adres wgranego zdjęcia, pusty = zwykłe słupki
 
   snapshots = signal<SortState[]>([]);
   currentStep = signal(0);
@@ -97,9 +98,26 @@ export class SortPlayer {
     this.shuffle();
   }
 
+  setImage(file: File): void {
+    this.imageUrl.set(URL.createObjectURL(file));
+    this.shuffle();
+  }
+
+  removeImage(): void {
+    this.imageUrl.set('');
+    this.shuffle();
+  }
+
   shuffle(): void {
     this.pause();
-    const array = generateArray(this.size(), this.info().maxValue);
+
+    let array: number[];
+    if (this.imageUrl()) {
+      array = generateShuffledRange(this.size());
+    } else {
+      array = generateArray(this.size(), this.info().maxValue);
+    }
+
     const steps = runAlgorithm(this.algorithm(), array);
     this.snapshots.set(buildSnapshots(array, steps, this.algorithm()));
     this.currentStep.set(0);

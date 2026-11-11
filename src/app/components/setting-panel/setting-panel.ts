@@ -24,4 +24,13 @@ export class SettingPanel {
   sizeChange = output<number>();
   delayChange = output<number>();
   restart = output<void>();
+  imageChange = output<File>();
+  imageRemove = output<void>();
+
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imageChange.emit(input.files[0]);
+    }
+  }
 }

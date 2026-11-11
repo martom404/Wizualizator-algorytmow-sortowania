@@ -35,4 +35,14 @@
     severity="warn"
     (onClick)="restart.emit()"
   />
+
+  <div class="field">
+    <label>Wgraj zdjęcie</label>
+    <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" />
+    <p-button
+      label="Usuń zdjęcie"
+      severity="secondary"
+      (onClick)="fileInput.value = ''; imageRemove.emit()"
+    />
+  </div>
 </div>

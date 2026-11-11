@@ -1,9 +1,13 @@
-<div class="bars">
+<div class="bars" [class.image-mode]="imageUrl()">
 
   @for (value of state().array; track $index) {
-    <div class="bar" [class]="color($index)" [style.height.%]="(value / maxValue()) * 100">
-      <span class="value">{{ value }}</span>
-    </div>
+    @if (imageUrl()) {
+      <div class="bar image" [class]="color($index)" [style]="imageStyle(value)"></div>
+    } @else {
+      <div class="bar" [class]="color($index)" [style.height.%]="(value / maxValue()) * 100">
+        <span class="value">{{ value }}</span>
+      </div>
+    }
   }
 
 </div>

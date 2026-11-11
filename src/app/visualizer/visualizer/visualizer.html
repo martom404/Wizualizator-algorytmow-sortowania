@@ -4,7 +4,10 @@
 
   <p class="operation">{{ sortPlayer.state().description }}</p>
 
-  <app-sort-bars [state]="sortPlayer.state()" [maxValue]="sortPlayer.info().maxValue"/>
+  <app-sort-bars 
+  [state]="sortPlayer.state()" 
+  [maxValue]="sortPlayer.info().maxValue" 
+  [imageUrl]="sortPlayer.imageUrl()"/>
 
   @if (sortPlayer.state().buckets) {
   <app-bucket [buckets]="sortPlayer.state().buckets" [active]="sortPlayer.state().activeSlot" />
@@ -40,6 +43,8 @@
       (sizeChange)="sortPlayer.setSize($event)"
       (delayChange)="sortPlayer.setDelay($event)"
       (restart)="sortPlayer.shuffle()"
+      (imageChange)="sortPlayer.setImage($event)"
+      (imageRemove)="sortPlayer.removeImage()"
     />
   </div>
 
