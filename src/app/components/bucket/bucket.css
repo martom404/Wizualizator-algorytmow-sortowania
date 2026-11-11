@@ -1,3 +1,4 @@
+/* 10 kubełków obok siebie, każdy tej samej szerokości */
 .buckets {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -34,6 +35,10 @@
   color: var(--text-muted);
 }
 
+.active .box {
+  border-color: var(--bar-write);
+}
 
-.active .box   { border-color: var(--bar-write); }
-.active .label { color: var(--bar-write); }
+.active .label {
+  color: var(--bar-write);
+}

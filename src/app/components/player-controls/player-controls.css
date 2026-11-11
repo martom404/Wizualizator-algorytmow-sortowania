@@ -20,6 +20,4 @@
 
 .counter {
   align-self: center;
-  font-family: var(--font);
-  color: var(--text);
 }

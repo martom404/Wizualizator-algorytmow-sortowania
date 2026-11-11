@@ -1,27 +1,35 @@
-import {Algorithm, Step, SortState} from './models';
+import { Algorithm, CountSlot, Step, SortState } from './models';
+import { emptyBuckets } from './algorithm';
+
+// Pola zliczeń dla Counting Sort
+function emptyCounts(array: number[]): CountSlot[] {
+  const values: number[] = [];
+  for (const value of array) {
+    if (!values.includes(value)) {
+      values.push(value);
+    }
+  }
+
+  values.sort((a, b) => a - b);
+
+  const counts: CountSlot[] = [];
+  for (const value of values) {
+    counts.push({ value: value, count: 0 });
+  }
+  return counts;
+}
 
 // Stan przed pierwszym krokiem
 export function initialState(array: number[], algorithm: Algorithm): SortState {
-  // Tablica zliczeń tylko dla Counting Sort
-  let counts: number[] | null = null;
-  if (algorithm === 'counting') {
-    // Rozmiar zależy od największej wartości w tablicy
-    counts = new Array(Math.max(9, ...array) + 1).fill(0);
-  }
-
-  // 10 pustych kubełków tylko dla Radix i Bucket Sort
-  let buckets: number[][] | null = null;
-  if (algorithm === 'radix' || algorithm === 'bucket') {
-    buckets = [[], [], [], [], [], [], [], [], [], []];
-  }
-
   return {
     array: [...array],
     sorted: [],
     highlights: [],
     highlightKind: null,
-    counts: counts,
-    buckets: buckets,
+    // Pola zliczeń tylko dla Counting Sort
+    counts: algorithm === 'counting' ? emptyCounts(array) : null,
+    // 10 pustych kubełków tylko dla Radix i Bucket Sort
+    buckets: algorithm === 'radix' || algorithm === 'bucket' ? emptyBuckets() : null,
     activeSlot: null,
     comparisons: 0,
     swaps: 0,
@@ -30,22 +38,22 @@ export function initialState(array: number[], algorithm: Algorithm): SortState {
   };
 }
 
+// Na podstawie poprzedniego stanu i jednego kroku tworzy następną klatkę.
+// Poprzedni stan zostaje bez zmian, dlatego wszystkie tablice są kopiowane.
 export function applyStep(previous: SortState, step: Step): SortState {
   const next: SortState = {
+    ...previous,
     array: [...previous.array],
     sorted: [...previous.sorted],
+    counts: previous.counts ? previous.counts.map((slot) => ({ ...slot })) : null,
+    buckets: previous.buckets ? previous.buckets.map((bucket) => [...bucket]) : null,
     highlights: [],
     highlightKind: null,
-    counts: previous.counts ? [...previous.counts] : null,
-    buckets: previous.buckets ? previous.buckets.map((bucket) => [...bucket]) : null,
     activeSlot: null,
-    comparisons: previous.comparisons,
-    swaps: previous.swaps,
-    writes: previous.writes,
     description: '',
-  }
+  };
 
-  switch(step.type) {
+  switch (step.type) {
     case 'compare': {
       const a = next.array[step.indexA];
       const b = next.array[step.indexB];
@@ -76,21 +84,25 @@ export function applyStep(previous: SortState, step: Step): SortState {
       break;
     }
     case 'count': {
-      next.counts![step.value]++;
+      // szukamy pola z tą wartością i zwiększamy jego licznik
+      const slot = next.counts!.findIndex((s) => s.value === step.value);
+      next.counts![slot].count++;
       next.highlights = [step.index];
       next.highlightKind = 'write';
-      next.activeSlot = step.value;
-      next.description = `Wartość: ${step.value}, wystąpiła już ${next.counts![step.value]} raz(y).`;
+      next.activeSlot = slot;
+      next.description = `Wartość: ${step.value}, wystąpiła już ${next.counts![slot].count} raz(y).`;
       break;
     }
     case 'place': {
-      next.counts![step.value]--;
+      // wpisujemy wartość do tablicy, a w jej polu zmniejszamy licznik
+      const slot = next.counts!.findIndex((s) => s.value === step.value);
+      next.counts![slot].count--;
       next.array[step.index] = step.value;
       next.sorted.push(step.index);
       next.writes++;
       next.highlights = [step.index];
       next.highlightKind = 'write';
-      next.activeSlot = step.value;
+      next.activeSlot = slot;
       next.description = `Wpisanie wartości ${step.value} na pozycję ${step.index + 1}`;
       break;
     }
@@ -103,11 +115,9 @@ export function applyStep(previous: SortState, step: Step): SortState {
       next.description = `Element ${step.value} trafia do kubełka ${step.bucket}`;
       break;
     }
-
     case 'fromBucket': {
       const bucket = next.buckets![step.bucket];
-      const position = bucket.indexOf(step.value);
-      bucket.splice(position, 1);
+      bucket.splice(bucket.indexOf(step.value), 1);
       next.array[step.index] = step.value;
       if (step.isFinal) {
         next.sorted.push(step.index);
@@ -124,21 +134,22 @@ export function applyStep(previous: SortState, step: Step): SortState {
   return next;
 }
 
+// Zamienia listę kroków na listę gotowych klatek (stanów).
+// Dzięki temu można łatwo cofać się i przeskakiwać do dowolnego kroku suwakiem.
 export function buildSnapshots(array: number[], steps: Step[], algorithm: Algorithm): SortState[] {
-  const snapshots: SortState[] = [];
   let current = initialState(array, algorithm);
-  snapshots.push(current);
+  const snapshots: SortState[] = [current];
 
   for (const step of steps) {
     current = applyStep(current, step);
     snapshots.push(current);
   }
 
+  // Ostatnia klatka: zdejmujemy podświetlenia i zmieniamy opis na końcowy
   current.description = 'Tablica została posortowana.';
   current.highlights = [];
   current.highlightKind = null;
   current.activeSlot = null;
-
 
   return snapshots;
 }

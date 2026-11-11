@@ -1,0 +1,38 @@
+.counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.slot {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  min-width: 40px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+
+.value {
+  width: 100%;
+  padding: 2px 6px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.count {
+  padding: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.active {
+  border-color: var(--bar-write);
+}
+
+.active .value {
+  color: var(--bar-write);
+}

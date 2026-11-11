@@ -1,14 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SortPlayer } from '../../services/sort-player';
 import { SortBars } from '../../components/sort-bars/sort-bars';
 import { PlayerControls } from '../../components/player-controls/player-controls';
 import { SettingPanel } from '../../components/setting-panel/setting-panel';
 import { InfoPanel } from '../../components/info-panel/info-panel';
 import { Bucket } from '../../components/bucket/bucket';
+import { Counts } from '../../components/counts/counts';
 
 @Component({
   selector: 'app-visualizer',
-  imports: [SortBars, PlayerControls, SettingPanel, InfoPanel, Bucket],
+  imports: [SortBars, PlayerControls, SettingPanel, InfoPanel, Bucket, Counts],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './visualizer.html',
   styleUrl: './visualizer.css',
 })

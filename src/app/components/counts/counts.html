@@ -1,0 +1,8 @@
+<div class="counts">
+  @for (slot of counts(); track slot.value; let slotNumber = $index) {
+    <div class="slot" [class.active]="slotNumber === active()">
+      <span class="value">{{ slot.value }}</span>
+      <span class="count">{{ slot.count }}</span>
+    </div>
+  }
+</div>

@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
   `,
 })
 export class ThemeToggle {
+  // domyślnie ciemny motyw, chyba że użytkownik wcześniej wybrał jasny (zapisane w localStorage)
   protected readonly isDark = signal(localStorage.getItem('theme') !== 'light');
 
   protected readonly icon = computed(() => (this.isDark() ? 'pi pi-sun' : 'pi pi-moon'));
@@ -24,6 +25,7 @@ export class ThemeToggle {
   );
 
   constructor() {
+    // przy każdej zmianie isDark: dodaje/usuwa klasę app-dark na <html>
     effect(() => {
       document.documentElement.classList.toggle('app-dark', this.isDark());
       localStorage.setItem('theme', this.isDark() ? 'dark' : 'light');

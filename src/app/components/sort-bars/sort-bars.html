@@ -1,13 +1,13 @@
 <div class="bars" [class.image-mode]="imageUrl()">
-
   @for (value of state().array; track $index) {
     @if (imageUrl()) {
-      <div class="bar image" [class]="color($index)" [style]="imageStyle(value)"></div>
+      <!-- tryb zdjęcia: każdy słupek pokazuje jeden kawałek zdjęcia -->
+      <div class="bar image" [class]="barClass($index)" [style]="imageStyle(value)"></div>
     } @else {
-      <div class="bar" [class]="color($index)" [style.height.%]="(value / maxValue()) * 100">
+      <!-- zwykły tryb: wysokość słupka w % względem największej możliwej wartości -->
+      <div class="bar" [class]="barClass($index)" [style.height.%]="(value / maxValue()) * 100">
         <span class="value">{{ value }}</span>
       </div>
     }
   }
-
 </div>

@@ -1,38 +1,41 @@
 <div class="controls">
   <div class="buttons">
     <p-button
-      icon = "pi pi-replay"
+      icon="pi pi-replay"
       [outlined]="true"
       [text]="true"
       severity="contrast"
       [disabled]="currentStep() === 0"
       (onClick)="restart.emit()"
+      ariaLabel="Restart"
       pTooltip="Restart"
       tooltipPosition="top"
     />
     <p-button
-      icon = "pi pi-step-backward"
+      icon="pi pi-step-backward"
       severity="info"
       [text]="true"
       [outlined]="true"
       [disabled]="currentStep() === 0"
       (onClick)="previousStep.emit()"
+      ariaLabel="Krok wstecz"
       pTooltip="Krok wstecz"
       tooltipPosition="top"
     />
     <p-button
-      [icon] = "playIcon()"
+      [icon]="playIcon()"
       [label]="playLabel()"
       [text]="true"
       (onClick)="togglePlay.emit()"
     />
     <p-button
-      icon = "pi pi-step-forward"
+      icon="pi pi-step-forward"
       severity="info"
       [text]="true"
       [outlined]="true"
       [disabled]="currentStep() === lastStep()"
       (onClick)="nextStep.emit()"
+      ariaLabel="Krok do przodu"
       pTooltip="Krok do przodu"
       tooltipPosition="top"
     />
@@ -40,11 +43,15 @@
 
   <div class="timeline">
     <p-slider
-    [min]="0"
-    [max]="lastStep()"
-    [ngModel]="currentStep()"
-    (ngModelChange)="seek.emit($event)"
+      [min]="0"
+      [max]="lastStep()"
+      [ngModel]="currentStep()"
+      (ngModelChange)="seek.emit($event)"
+      ariaLabel="Numer kroku"
     />
-    <span class="counter">Kroki: {{currentStep()}} / {{lastStep()}} | Porównania: {{ comparisons() }} | Zamiany: {{ swaps() }} | Zapisy: {{ writes() }}</span>
+    <span class="counter">
+      Kroki: {{ currentStep() }} / {{ lastStep() }} | Porównania: {{ comparisons() }} | Zamiany:
+      {{ swaps() }} | Zapisy: {{ writes() }}
+    </span>
   </div>
 </div>

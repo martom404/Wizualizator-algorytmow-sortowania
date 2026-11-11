@@ -1,5 +1,8 @@
+/* ikony PrimeNG */
 @import 'primeicons/primeicons.css';
 
+/* Zmienne z kolorami dla jasnego motywu.
+   --p-surface to odcienie szarości z motywu PrimeNG */
 :root {
   --bg: var(--p-surface-200);
   --panel: var(--p-surface-0);
@@ -16,6 +19,8 @@
   --font: system-ui, sans-serif;
 }
 
+/* Ciemny motyw
+   Klasę app-dark dodaje komponent ThemeToggle */
 :root.app-dark {
   --bg: var(--p-surface-950);
   --panel: var(--p-surface-800);
@@ -50,5 +55,4 @@ h3 {
   margin: 0 0 24px;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
-  color: var(--text);
 }

@@ -1,39 +1,38 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { SortState } from '../../sorting/models';
 
 @Component({
   selector: 'app-sort-bars',
-  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sort-bars.html',
   styleUrl: './sort-bars.css',
 })
 export class SortBars {
   state = input.required<SortState>();
-  maxValue = input.required<number>();
-  imageUrl = input(''); // pusty = zwykłe słupki
+  maxValue = input.required<number>(); // potrzebne do policzenia wysokości słupka w %
+  imageUrl = input('');
 
-  // Styl słupka, który ma pokazać kawałek zdjęcia o numerze "value"
+  // Styl słupka, który ma pokazać kawałek zdjęcia o numerze "value".
+  // Zdjęcie jest rozciągnięte na szerokość wszystkich słupków i przesunięte tak,
+  // żeby w danym słupku był widoczny tylko jego kawałek.
   imageStyle(value: number) {
-    const count = this.state().array.length; // na ile kawałków dzielimy zdjęcie
+    const count = this.state().array.length;
 
     return {
-      'background-image': 'url(' + this.imageUrl() + ')',
-      'background-size': count * 100 + '% 100%',
-      'background-position': ((value - 1) / (count - 1)) * 100 + '% 0',
+      'background-image': `url(${this.imageUrl()})`,
+      'background-size': `${count * 100}% 100%`,
+      'background-position': `${((value - 1) / (count - 1)) * 100}% 0`,
     };
   }
 
-  color(index: number): string {
+  barClass(index: number): string {
     const state = this.state();
 
-    const isHighlighted = state.highlights.includes(index);
-    const isSorted = state.sorted.includes(index);
-
-    if (isHighlighted && state.highlightKind !== null) {
+    if (state.highlightKind !== null && state.highlights.includes(index)) {
       return state.highlightKind;
     }
 
-    if (isSorted) {
+    if (state.sorted.includes(index)) {
       return 'sorted';
     }
 

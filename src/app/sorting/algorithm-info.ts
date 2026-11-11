@@ -31,8 +31,8 @@ export const ALGORITHM_INFO: Record<Algorithm, AlgorithmInfo> = {
     best: 'O(n + k)',
     average: 'O(n + k)',
     worst: 'O(n + k)',
-    note: 'k to zakres wartości. Opłaca się tylko przy małym zakresie, dlatego wartości są tu losowane z przedziału 1–9.',
-    maxValue: 99,
+    note: 'k to zakres wartości (tu 20). Opłaca się tylko wtedy, gdy zakres wartości jest mały w porównaniu z liczbą elementów, dlatego wartości są tu losowane z przedziału 1–20.',
+    maxValue: 20,
   },
   radix: {
     id: 'radix',

@@ -1,7 +1,8 @@
 <div class="settings">
   <div class="field">
-    <label>Wybrany algorytm</label>
+    <label for="algorithm-select">Wybrany algorytm</label>
     <p-select
+      inputId="algorithm-select"
       [options]="algorithms"
       optionLabel="name"
       optionValue="id"
@@ -10,35 +11,40 @@
     />
   </div>
   <div class="field">
-    <label>Liczba elementów: {{ selectedSize() }}</label>
+    <label id="size-label">Liczba elementów: {{ selectedSize() }}</label>
     <p-slider
       class="slider"
       [min]="10"
       [max]="50"
       [ngModel]="selectedSize()"
       (ngModelChange)="sizeChange.emit($event)"
+      ariaLabelledBy="size-label"
     />
   </div>
   <div class="field">
-    <label>Opóźnienie: {{ selectedDelay() }}</label>
+    <label id="delay-label">Opóźnienie: {{ selectedDelay() }}</label>
     <p-slider
       class="slider"
       [min]="50"
       [max]="1000"
       [ngModel]="selectedDelay()"
       (ngModelChange)="delayChange.emit($event)"
+      ariaLabelledBy="delay-label"
     />
   </div>
 
-  <p-button
-    label="Nowa tablica"
-    severity="warn"
-    (onClick)="restart.emit()"
-  />
+  <p-button label="Nowa tablica" severity="warn" (onClick)="shuffle.emit()" />
 
   <div class="field">
-    <label>Wgraj zdjęcie</label>
-    <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" />
+    <label for="image-input">Wgraj zdjęcie</label>
+    <input
+      #fileInput
+      id="image-input"
+      type="file"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+    />
+
     <p-button
       label="Usuń zdjęcie"
       severity="secondary"

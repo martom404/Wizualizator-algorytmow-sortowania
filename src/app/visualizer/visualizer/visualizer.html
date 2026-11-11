@@ -1,16 +1,23 @@
+<!-- lewa część: wykres, kubełki / zliczenia i odtwarzacz -->
 <div class="panel stage">
-
   <h2 class="panel-title">Wizualizator algorytmów sortowania</h2>
 
   <p class="operation">{{ sortPlayer.state().description }}</p>
 
-  <app-sort-bars 
-  [state]="sortPlayer.state()" 
-  [maxValue]="sortPlayer.info().maxValue" 
-  [imageUrl]="sortPlayer.imageUrl()"/>
+  <app-sort-bars
+    [state]="sortPlayer.state()"
+    [maxValue]="sortPlayer.info().maxValue"
+    [imageUrl]="sortPlayer.imageUrl()"
+  />
 
+  <!-- kubełki pokazują się tylko dla algorytmów, które ich używają -->
   @if (sortPlayer.state().buckets) {
-  <app-bucket [buckets]="sortPlayer.state().buckets" [active]="sortPlayer.state().activeSlot" />
+    <app-bucket [buckets]="sortPlayer.state().buckets" [active]="sortPlayer.state().activeSlot" />
+  }
+
+  <!-- pola zliczeń tylko dla Counting Sort -->
+  @if (sortPlayer.state().counts) {
+    <app-counts [counts]="sortPlayer.state().counts" [active]="sortPlayer.state().activeSlot" />
   }
 
   <app-player-controls
@@ -20,41 +27,34 @@
     [comparisons]="sortPlayer.state().comparisons"
     [swaps]="sortPlayer.state().swaps"
     [writes]="sortPlayer.state().writes"
-
     (togglePlay)="sortPlayer.togglePlay()"
-    (nextStep)="sortPlayer.pause(); sortPlayer.stepForward()"
+    (nextStep)="sortPlayer.nextStep()"
     (previousStep)="sortPlayer.stepBack()"
     (restart)="sortPlayer.restart()"
     (seek)="sortPlayer.seek($event)"
   />
 </div>
 
+<!-- prawa część: ustawienia i informacje o algorytmie -->
 <div class="sidebar">
   <div class="panel">
-
     <h2 class="panel-title">Ustawienia</h2>
 
     <app-setting-panel
       [selectedAlgorithm]="sortPlayer.algorithm()"
       [selectedSize]="sortPlayer.size()"
       [selectedDelay]="sortPlayer.delay()"
-
       (algorithmChange)="sortPlayer.setAlgorithm($event)"
       (sizeChange)="sortPlayer.setSize($event)"
       (delayChange)="sortPlayer.setDelay($event)"
-      (restart)="sortPlayer.shuffle()"
+      (shuffle)="sortPlayer.shuffle()"
       (imageChange)="sortPlayer.setImage($event)"
       (imageRemove)="sortPlayer.removeImage()"
     />
   </div>
 
   <div class="panel">
-
     <h2 class="panel-title">Informacje</h2>
-    <app-info-panel
-      [info]="sortPlayer.info()"
-    />
+    <app-info-panel [info]="sortPlayer.info()" />
   </div>
 </div>
-
-

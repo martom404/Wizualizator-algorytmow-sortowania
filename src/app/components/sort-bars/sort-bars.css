@@ -14,10 +14,19 @@
   background: var(--bar-idle);
   transition: height 0.5s, background-color 0.1s;
 
-  &.compare { background: var(--bar-compare); }
-  &.swap    { background: var(--bar-swap); }
-  &.write   { background: var(--bar-write); }
-  &.sorted  { background: var(--bar-sorted); }
+  /* kolor zależy od klasy, którą zwraca barClass() w sort-bars.ts */
+  &.compare {
+    background: var(--bar-compare);
+  }
+  &.swap {
+    background: var(--bar-swap);
+  }
+  &.write {
+    background: var(--bar-write);
+  }
+  &.sorted {
+    background: var(--bar-sorted);
+  }
 }
 
 /* Tryb zdjęcia: słupki bez odstępów i na całą wysokość */
@@ -29,8 +38,11 @@
   height: 100%;
   border-radius: 0;
 
-  /* aktualnie porównywane / zamieniane słupki są przezroczyste */
-  &.compare, &.swap, &.write { opacity: 0.4; }
+  &.compare,
+  &.swap,
+  &.write {
+    opacity: 0.4;
+  }
 }
 
 .value {
@@ -40,5 +52,4 @@
   transform: translateX(-50%);
   padding-bottom: 5px;
   font-size: 12px;
-  color: var(--text);
 }
