@@ -188,7 +188,7 @@ export function generateShuffledRange(size: number): number[] {
   // Najpierw po kolei: 1, 2, 3, ..., size
   const result = Array.from({ length: size }, (_, i) => i + 1);
 
-  // Potem mieszamy
+  // Potem mieszamy (tasowanie Fishera-Yatesa)
   for (let i = size - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [result[i], result[j]] = [result[j], result[i]];
