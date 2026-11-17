@@ -14,8 +14,8 @@
     <label id="size-label">Liczba elementów: {{ selectedSize() }}</label>
     <p-slider
       class="slider"
-      [min]="10"
-      [max]="50"
+      [min]="5"
+      [max]="30"
       [ngModel]="selectedSize()"
       (ngModelChange)="sizeChange.emit($event)"
       ariaLabelledBy="size-label"
