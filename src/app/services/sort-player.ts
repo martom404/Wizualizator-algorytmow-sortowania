@@ -5,7 +5,6 @@ import { buildSnapshots } from '../sorting/playback';
 import { Algorithm, SortState } from '../sorting/models';
 
 // Serwis, który trzyma cały stan wizualizacji i steruje odtwarzaniem
-// (start, pauza, krok w przód/tył, przewijanie). Jest jeden na całą aplikację.
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +13,7 @@ export class SortPlayer {
   algorithm = signal<Algorithm>('bubble');
   size = signal(10); // liczba elementów tablicy
   delay = signal(200); // czas między krokami w ms
-  imageUrl = signal(''); // adres wgranego zdjęcia, pusty = zwykłe słupki
+  imageUrl = signal(''); // adres wgranego zdjęcia
 
   snapshots = signal<SortState[]>([]); // wszystkie klatki animacji policzone z góry
   currentStep = signal(0); // numer aktualnie wyświetlanej klatki
@@ -24,7 +23,7 @@ export class SortPlayer {
   lastStep = computed(() => this.snapshots().length - 1);
   info = computed(() => ALGORITHM_INFO[this.algorithm()]); // opis wybranego algorytmu
 
-  private timer = 0; // id z setInterval, potrzebne do zatrzymania animacji
+  private timer = 0; // potrzebne do zatrzymania animacji
 
   constructor() {
     // od razu po starcie losujemy pierwszą tablicę
@@ -106,7 +105,6 @@ export class SortPlayer {
 
   setAlgorithm(algorithm: Algorithm): void {
     this.algorithm.set(algorithm);
-    this.shuffle();
   }
 
   setSize(size: number): void {

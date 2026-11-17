@@ -12,12 +12,18 @@
 
   <!-- kubełki pokazują się tylko dla algorytmów, które ich używają -->
   @if (sortPlayer.state().buckets) {
-    <app-bucket [buckets]="sortPlayer.state().buckets" [active]="sortPlayer.state().activeSlot" />
+    <app-bucket
+      [buckets]="sortPlayer.state().buckets"
+      [active]="sortPlayer.state().activeSlot"
+    />
   }
 
   <!-- pola zliczeń tylko dla Counting Sort -->
   @if (sortPlayer.state().counts) {
-    <app-counts [counts]="sortPlayer.state().counts" [active]="sortPlayer.state().activeSlot" />
+    <app-counts
+      [counts]="sortPlayer.state().counts"
+      [active]="sortPlayer.state().activeSlot"
+    />
   }
 
   <app-player-controls
